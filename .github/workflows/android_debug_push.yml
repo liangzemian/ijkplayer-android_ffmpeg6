@@ -52,13 +52,13 @@ jobs:
           # ndk-build -v
       - name: NDK path
         run: |
-          ls -l /Users/runner/work/ijkplayer-android_ffmpeg6
+          ls -l /home/runner/work/ijkplayer-android_ffmpeg6
       - name: NDK path
         run: |
-          ls -l /Users/runner/work/ijkplayer-android_ffmpeg6/ijkplayer-android_ffmpeg6
+          ls -l /home/runner/work/ijkplayer-android_ffmpeg6/ijkplayer-android_ffmpeg6
       - name: Build with Gradle
         run: |
-          ls -l /Users/runner/work/ijkplayer-android_ffmpeg6/ijkplayer-android_ffmpeg6/android-ndk-r27c
+          ls -l /home/runner/work/ijkplayer-android_ffmpeg6/ijkplayer-android_ffmpeg6/android-ndk-r27c
           export ANDROID_NDK=/Users/runner/work/ijkplayer-android_ffmpeg6/ijkplayer-android_ffmpeg6/android-ndk-r27c
           export ANDROID_NDK_ROOT=/Users/runner/work/ijkplayer-android_ffmpeg6/ijkplayer-android_ffmpeg6/android-ndk-r27c
 
