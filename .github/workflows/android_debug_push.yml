@@ -12,7 +12,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-13
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
@@ -39,8 +39,8 @@ jobs:
           java-version: 11    
       - name: Download r27c NDK
         run: |      
-          wget https://dl.google.com/android/repository/android-ndk-r27c-darwin.zip
-          unzip android-ndk-r27c-darwin.zip
+          wget https://dl.google.com/android/repository/android-ndk-r27c-linux.zip
+          unzip android-ndk-r27c-linux.zip
           ls -l /Users/runner/work/ijkplayer-android_ffmpeg6/ijkplayer-android_ffmpeg6/android-ndk-r27c/prebuilt
       - name: Update SDK Version
         run: bash .github/script/updateVersionForSnapshot.sh
