@@ -50,6 +50,12 @@ jobs:
           # brew install awk
           sudo apt-get update && sudo apt-get install -y gawk
           # ndk-build -v
+      - name: NDK path
+        run: |
+          ls -l /Users/runner/work/ijkplayer-android_ffmpeg6
+      - name: NDK path
+        run: |
+          ls -l /Users/runner/work/ijkplayer-android_ffmpeg6/ijkplayer-android_ffmpeg6
       - name: Build with Gradle
         run: |
           ls -l /Users/runner/work/ijkplayer-android_ffmpeg6/ijkplayer-android_ffmpeg6/android-ndk-r27c
