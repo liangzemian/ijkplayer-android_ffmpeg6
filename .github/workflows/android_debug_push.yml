@@ -41,7 +41,7 @@ jobs:
         run: |      
           wget https://dl.google.com/android/repository/android-ndk-r27c-linux.zip
           unzip android-ndk-r27c-linux.zip
-          ls -l /Users/runner/work/ijkplayer-android_ffmpeg6/ijkplayer-android_ffmpeg6/android-ndk-r27c/prebuilt
+          # ls -l /Users/runner/work/ijkplayer-android_ffmpeg6/ijkplayer-android_ffmpeg6/android-ndk-r27c/prebuilt
       - name: Update SDK Version
         run: bash .github/script/updateVersionForSnapshot.sh
       - name: Update awk
