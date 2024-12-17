@@ -47,7 +47,8 @@ jobs:
       - name: Update awk
         run: |
           # rm /Users/runner/work/ijkplayer-android_ffmpeg6/ijkplayer-android_ffmpeg6/android-ndk-r27c/prebuilt/darwin/bin/awk
-          brew install awk
+          # brew install awk
+          sudo apt-get update && sudo apt-get install -y gawk
           # ndk-build -v
       - name: Build with Gradle
         run: |
