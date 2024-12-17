@@ -1,0 +1,102 @@
+name: IOT IJK ANDROID DEBUG CI
+
+on:
+  workflow_dispatch:
+  push:
+    tags-ignore:
+      - '*'
+    branches:
+      - '*'
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: macos-13
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Read Current Version
+        id: get_version
+        run: |
+          VERSION=$(cat VERSION.txt)
+          echo "Current version: $VERSION"
+          echo "version=$VERSION" >> $GITHUB_ENV
+
+      - name: Increment Version
+        id: increment_version
+        run: |
+          IFS='.' read -r major minor patch <<< "${{ env.version }}"
+          patch=$((patch + 1))
+          new_version="$major.$minor.$patch"
+          echo "New version: $new_version"
+          echo "$new_version" > VERSION.txt
+          echo "new_version=$new_version" >> $GITHUB_ENV    
+      - uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 11    
+      - name: Download r12b NDK
+        run: |
+          wget https://dl.google.com/android/repository/android-ndk-r12b-darwin-x86_64.zip
+          unzip android-ndk-r12b-darwin-x86_64.zip
+      - name: Update SDK Version
+        run: bash .github/script/updateVersionForSnapshot.sh
+      - name: Update awk
+        run: |
+          rm /Users/runner/work/ijkplayer-android_ffmpeg6/ijkplayer-android_ffmpeg6/android-ndk-r27c/prebuilt/darwin-x86_64/bin/awk
+          brew install awk
+          # ndk-build -v
+      - name: Build with Gradle
+        run: |
+          ls -l /Users/runner/work/ijkplayer-android_ffmpeg6/ijkplayer-android_ffmpeg6/android-ndk-r27c
+          export ANDROID_NDK=/Users/runner/work/ijkplayer-android_ffmpeg6/ijkplayer-android_ffmpeg6/android-ndk-r27c
+          export ANDROID_NDK_ROOT=/Users/runner/work/ijkplayer-android_ffmpeg6/ijkplayer-android_ffmpeg6/android-ndk-r27c
+
+          sh .github/script/build_armv7a.sh
+          cd android/ijkplayer
+          ./gradlew :ijkplayer-armv7a:assemble
+          ./gradlew :ijkplayer-arm64:assemble
+          ./gradlew :ijkplayer-java:assemble
+
+      - name: Check AAR File Size
+        run: |
+          FILE_PATH="android/ijkplayer/ijkplayer-armv7a/build/outputs/aar/ijkplayer-armv7a-release.aar"
+          FILE_SIZE=$(stat -c%s "$FILE_PATH")
+          echo "File size: $FILE_SIZE bytes"
+          if [ "$FILE_SIZE" -lt 3145728 ]; then
+            echo "Error: AAR file size is less than 3MB."
+            exit 1
+          fi    
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ env.new_version }}
+          name: Release ${{ env.new_version }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Upload AAR files
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ env.new_version }}
+          files: |
+            android/ijkplayer/ijkplayer-armv7a/build/outputs/aar/ijkplayer-armv7a-release.aar
+            android/ijkplayer/ijkplayer-arm64/build/outputs/aar/ijkplayer-arm64-release.aar
+            android/ijkplayer/ijkplayer-java/build/outputs/aar/ijkplayer-java-release.aar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit version update
+        run: |
+          git config --local user.name "GitHub Actions"
+          git config --local user.email "actions@github.com"
+          git add VERSION.txt
+          git commit -m "Update version to ${{ steps.increment_version.outputs.new_version }}"
+          git push
+  
+      #     ./gradlew :ijkplayer-java:publish
