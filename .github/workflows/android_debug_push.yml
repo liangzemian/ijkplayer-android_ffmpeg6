@@ -41,12 +41,12 @@ jobs:
         run: |      
           wget https://dl.google.com/android/repository/android-ndk-r27c-darwin.zip
           unzip android-ndk-r27c-darwin.zip
+          ls -l /Users/runner/work/ijkplayer-android_ffmpeg6/ijkplayer-android_ffmpeg6/android-ndk-r27c/prebuilt
       - name: Update SDK Version
         run: bash .github/script/updateVersionForSnapshot.sh
       - name: Update awk
         run: |
-          ls -l /Users/runner/work/ijkplayer-android_ffmpeg6/ijkplayer-android_ffmpeg6/android-ndk-r27c/prebuilt
-          rm /Users/runner/work/ijkplayer-android_ffmpeg6/ijkplayer-android_ffmpeg6/android-ndk-r27c/prebuilt/darwin-x86_64/bin/awk
+          rm /Users/runner/work/ijkplayer-android_ffmpeg6/ijkplayer-android_ffmpeg6/android-ndk-r27c/prebuilt/darwin/bin/awk
           brew install awk
           # ndk-build -v
       - name: Build with Gradle
