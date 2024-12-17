@@ -46,7 +46,7 @@ jobs:
         run: bash .github/script/updateVersionForSnapshot.sh
       - name: Update awk
         run: |
-          rm /Users/runner/work/ijkplayer-android_ffmpeg6/ijkplayer-android_ffmpeg6/android-ndk-r27c/prebuilt/darwin/bin/awk
+          # rm /Users/runner/work/ijkplayer-android_ffmpeg6/ijkplayer-android_ffmpeg6/android-ndk-r27c/prebuilt/darwin/bin/awk
           brew install awk
           # ndk-build -v
       - name: Build with Gradle
