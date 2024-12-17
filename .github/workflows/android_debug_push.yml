@@ -38,9 +38,9 @@ jobs:
           distribution: temurin
           java-version: 11    
       - name: Download r27c NDK
-        run: |
-          wget https://dl.google.com/android/repository/android-ndk-r27c-darwin-x86_64.zip
-          unzip android-ndk-r27c-darwin-x86_64.zip
+        run: |      
+          wget https://dl.google.com/android/repository/android-ndk-r27c-darwin.zip
+          unzip android-ndk-r27c-darwin.zip
       - name: Update SDK Version
         run: bash .github/script/updateVersionForSnapshot.sh
       - name: Update awk
