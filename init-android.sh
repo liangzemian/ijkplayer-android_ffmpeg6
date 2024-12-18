@@ -29,10 +29,10 @@ git --version
 
 echo "== pull ffmpeg base =="
 sh $TOOLS/pull-repo-base.sh $IJK_FFMPEG_UPSTREAM $IJK_FFMPEG_LOCAL_REPO
-cd ${IJK_FFMPEG_LOCAL_REPO}
-git branch -a
-git checkout ${IJK_FFMPEG_COMMIT}
-cd -
+# cd ${IJK_FFMPEG_LOCAL_REPO}
+# git branch -a
+# git checkout ${IJK_FFMPEG_COMMIT}
+# cd -
 
 function pull_fork() {
     echo "== pull ffmpeg fork $1 =="
@@ -42,10 +42,10 @@ function pull_fork() {
     cd -
 }
 
-# pull_fork "armv7a"
-# pull_fork "arm64"
-# pull_fork "x86"
-# pull_fork "x86_64"
+pull_fork "armv7a"
+pull_fork "arm64"
+pull_fork "x86"
+pull_fork "x86_64"
 
 ./init-config.sh
 ./init-android-libyuv.sh
